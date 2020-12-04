@@ -57,12 +57,12 @@ exports.loginStudent = async (req, res, next) => {
 
         if (await bcrypt.compareSync(req.body.password, results[0].password)) {
             const token = jwt.sign({
-                userId: results[0].userId,
+                studentId: results[0].studentId,
                 email: results[0].email
             },
             process.env.JWT_KEY,
             {
-                expiresIn: "1h"
+                expiresIn: 3600
             });
             return res.status(200).send({
                 message: 'Autenticado com sucesso',

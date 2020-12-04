@@ -14,9 +14,8 @@ exports.createTeacher = async (req, res, next) => {
 
         const hash = await bcrypt.hashSync(req.body.password, 10);
 
-        query = 'INSERT INTO professores (firstName, lastName, documentNumber, birthday, zip, state, city, address, number, addressDetails, neighborhood, foneMobile, foneHome, foneCompany, email, password) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-        const results = await mysql.execute(query, [req.body.firstName, req.body.lastName, req.body.documentNumber, req.body.birthday, req.body.zip, req.body.state, req.body.city, req.body.address, req.body.number, req.body.addressDetails, req.body.neighborhood, req.body.foneMobile, req.body.foneHome, req.body.foneCompany, req.body.email, hash]);
-
+        query = 'INSERT INTO professores (firstName, lastName, documentNumber, birthday, diploma, zip, state, city, address, number, addressDetails, neighborhood, foneMobile, foneHome, foneCompany, email, password) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+        const results = await mysql.execute(query, [req.body.firstName, req.body.lastName, req.body.documentNumber, req.body.birthday, req.file.path, req.body.zip, req.body.state, req.body.city, req.body.address, req.body.number, req.body.addressDetails, req.body.neighborhood, req.body.foneMobile, req.body.foneHome, req.body.foneCompany, req.body.email, hash]);
         const response = {
             message: 'Professor(a) criado com sucesso',
             createdUser: {
@@ -25,6 +24,7 @@ exports.createTeacher = async (req, res, next) => {
                 lastName: req.body.lastName,
                 documentNumber: req.body.documentNumber,
                 birthday: req.body.birthday,
+                diploma: req.file.path,
                 zip: req.body.zip,
                 state: req.body.state,
                 city: req.body.city,
@@ -57,7 +57,7 @@ exports.loginTeacher = async (req, res, next) => {
 
         if (await bcrypt.compareSync(req.body.password, results[0].password)) {
             const token = jwt.sign({
-                userId: results[0].userId,
+                teacherId: results[0].teacherId,
                 email: results[0].email
             },
             process.env.JWT_KEY,
