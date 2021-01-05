@@ -4,6 +4,7 @@
   "description": "Back-End TCC",
   "main": "index.js",
   "author": "Italo Alves",
+  "repository": "https://github.com/Italo-Alves/Estudai-Back-End.git",
   "license": "MIT",
   "scripts": {
     "start": "nodemon server.js"
